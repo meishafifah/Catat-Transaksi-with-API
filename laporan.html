@@ -1,0 +1,85 @@
+<div class="row">                    
+  <div class="col-md-12">
+    <div class="card">
+      <div class="header">
+        <h4 class="title">Laporan Transaksi</h4>
+        <p class="category">7 Hari Terakhir</p>
+      </div>
+      <div class="content">
+        <div id="chartHours" class="ct-chart"></div>
+        <div class="footer">
+          <div class="legend">
+            <i class="fa fa-circle text-info"></i> Total Nominal Penjualan : Rp <span id="total_data"></span>
+          </div>
+          <hr>
+          <div class="stats">
+            <i class="fa fa-history"></i> Per Tanggal <span id="tgl_data"></span>
+          </div>                                    
+        </div>
+      </div>
+    </div>
+  </div>    
+  
+  <script src="assets/js/chartist.min.js"></script>
+  <script>
+    var dataSales = {
+      labels: [],
+      series: []
+    }
+    function initChartist() {
+      var optionSales = {
+        lineSmooth: false,
+        low: 0,
+        showArea: true,
+        height: "245px",
+        axisX: {
+          showGrid: false
+        },
+        lineSmooth: Chartist.Interpolation.simple({
+          divisor: 3
+        }),
+        showLine: false,
+        showPoint: false
+      }
+
+      var responsiveSales = [
+        ['screen and (max-width: 640px)', {
+          axisX: {
+            labelInterpolationFnc: function(value){
+              return value[0];
+            }
+          }
+        }]
+      ];
+      Chartist.Line('#chartHours', dataSales, optionSales, responsiveSales)
+    }
+
+    cekLaporan();
+    interval_global = setInterval(function(){ cekLaporan(); }, 3000)
+
+    function cekLaporan() {
+      var link = base_url + "laporan/transaksi"
+      $.ajax(link, {
+        type: 'GET',
+        success: function (data, status, xhr) {
+          var objData = JSON.parse(data)
+
+          dataSales.labels = objData['lebel']
+          dataSales.series = objData['data']
+
+          $("#total_data").text(objData['total'])
+          $("#tgl_data").text(objData['tgl_update'])
+          initChartist()
+        },
+        error: function (jqXHR, textStatus, errorMsg) {
+          $('#kontenHTML').html(objData['Error: ' + errorMsg])
+          $('title').html('Error')
+        }
+      })
+    }
+    cekLaporan()
+    interval_global = setInterval(function () {
+      cekLaporan()
+    }, 3000)
+  </script>
+</div> 

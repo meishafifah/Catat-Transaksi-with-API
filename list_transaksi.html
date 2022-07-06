@@ -1,0 +1,41 @@
+<link rel="stylesheet" href="assets/DataTables/DataTables-1.10.25/css/dataTables.bootstrap4.min.css">
+
+<div class="row">                   
+    <div class="col-md-12">
+        <div class="card">
+            <div class="header">
+                <h4 class="title">Riwayat Transaksi</h4>
+                <p class="category">Ini adalah daftar transaksi yang sudah diinput</p>
+            </div>
+            <div class="content table-responsive table-full-width">
+                <table class="table table-hover table-striped" id="table-data">
+                    <thead>
+                        <tr><th>#Invoice</th>
+                           <th>Pembeli</th>
+                           <th>Pembelian</th>
+                           <th>Total</th>
+                           <th>Tanggal Transaksi</th>
+                           <th>Opsi</th>
+                       </tr>
+                     </thead>
+               </table>
+
+               <script src="assets/DataTables/datatables.min.js"></script>
+               <script>
+                    function callData(rl) {
+                        $('#table-data').DataTable({
+                            "processing": true,
+                            "serverSide": true,
+                            "ajax": url
+                        });
+                    }
+               </script>
+           </div>
+       </div>
+   </div>  
+   
+   
+    
+
+
+</div>

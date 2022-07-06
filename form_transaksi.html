@@ -1,0 +1,98 @@
+<link rel="stylesheet" href="assets/jquery-ui-1.12.1/jquery-ui.min.css">
+
+<style>
+    .ui-autocomplete-loading {
+        background: white url("assets/img/ui-anim_basic_16x16.gif") right center no-repeat;
+    }
+</style>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="header">
+                <h4 class="title">Form Transaksi</h4>
+            </div>
+            <div class="content">
+                <form id="formBaru">                  
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Kode Invoice</label>
+                                <input type="text" class="form-control" placeholder="" value="" name="invoice">
+                            </div>        
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Nama Pembeli</label>
+                                <input type="text" class="form-control" placeholder="" value="" name="pembeli">
+                            </div>        
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>Produk Yang Dibeli</label>
+                                <input type="text" class="form-control" placeholder="" value="" name="nama_produk">
+                            </div>        
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Jumlah Beli</label>
+                                <input type="number" class="form-control" placeholder="" value="0" name="jumlah_beli">
+                            </div>        
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Harga Satuan</label>
+                                <input type="number" class="form-control" placeholder="" value="0" name="harga_satuan">
+                            </div>        
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Total</label>
+                                <input type="number" class="form-control" placeholder="" readonly="" name="total" value="0">
+                            </div>        
+                        </div>
+                    </div>
+                    
+                    <input type="hidden" name="id_transaksi" id="id_transaksi">
+
+                    <button type="submit" class="btn btn-info btn-fill pull-right">Simpan Data</button>
+                    <div class="clearfix"></div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+
+    <script src="assets/jquery-ui-1.12.1/jquery-ui.min.js"></script>
+    <script>
+        $(function(){
+            var link = base_url + "search/produk";
+            var cache = {};
+            $("input[name=nama_produk]" ).autoComplete({
+                minLength: 2,
+                source: function( request, response ) {
+                    var term = request.term;
+                    if (term in cache) {
+                        response(cache[term]);
+                        return;
+                    }
+
+                    $.getJSON(link, request, function(data, status, xhr){
+                        cache[term]=data;
+                        response(data);
+                    });
+                },
+                select: function(event, ui) {
+                    $("input[name=harga_satuan]").val(ui.item.harga)
+                }
+            });
+        });
+    </script>
+    
+</div>
