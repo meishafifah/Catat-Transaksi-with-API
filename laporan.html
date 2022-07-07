@@ -19,6 +19,7 @@
       </div>
     </div>
   </div>    
+  <!-- <script src="assets/js/jquery-1.10.2.js" type="text/javascript"></script> -->
   
   <script src="assets/js/chartist.min.js"></script>
   <script>
@@ -58,7 +59,7 @@
     interval_global = setInterval(function(){ cekLaporan(); }, 3000)
 
     function cekLaporan() {
-      var link = base_url + "laporan/transaksi"
+      var link = 'http://127.0.0.1:8000' + "laporan/transaksi"
       $.ajax(link, {
         type: 'GET',
         success: function (data, status, xhr) {
@@ -71,10 +72,10 @@
           $("#tgl_data").text(objData['tgl_update'])
           initChartist()
         },
-        error: function (jqXHR, textStatus, errorMsg) {
-          $('#kontenHTML').html(objData['Error: ' + errorMsg])
-          $('title').html('Error')
-        }
+        // error: function (data,jqXHR, textStatus, errorMsg) {
+        //   $('#kontenHTML').html('<div> Error: ' + errorMsg+"</div>")
+        //   $('title').html('Error')
+        // }
       })
     }
     cekLaporan()
@@ -82,4 +83,5 @@
       cekLaporan()
     }, 3000)
   </script>
+
 </div> 

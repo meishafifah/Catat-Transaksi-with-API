@@ -21,8 +21,36 @@
                </table>
 
                <script src="assets/DataTables/datatables.min.js"></script>
+               <script type="text/javascript">
+
+                function callData() {
+                  var link = 'http://127.0.0.1:8000' + "transaksi/";
+                  $.ajax(link, {
+                    type: 'GET',
+                    success : function (data, status, xhr) {
+                      var objData = JSON.parse(data);
+              
+                      var kontenTabel = '';
+              
+                      for (var i = 0; i < objData.jumlah_data; i++) {
+                        var row = objData.list_data[i];
+              
+                        kontenTabel += '<tr> <td>'+ row.invoice +'</td> <td>'+ row.pembeli +'</td> <td>'+ row.jumlah_beli +' X '+ row.nama_produk +'</td> <td>'+ (row.jumlah_beli*row.harga_satuan) +'</td> <td>'+ row.created_at +'</td> </tr>';
+                      }
+              
+                      $('tbody').html(kontenTabel);
+                    },
+                    error : function (jqXHR, textStatus, errorMsg) {
+                      $('tbody').html('<tr><td colspan="5">Error Pemanggilan Data</td> </tr>');
+                    }
+                  });
+                }
+              
+                callData();
+                
+              </script>
                <script>
-                    function callData(rl) {
+                    function callData(url) {
                         $('#table-data').DataTable({
                             "processing": true,
                             "serverSide": true,
